@@ -46,7 +46,35 @@ module.exports = {
       },
       {
         test: /\.html$/i,
-        loader: 'html-loader',
+        loader: "html-loader",
+      },
+      {
+        test: /\.less$/i,
+        use: [
+          // compiles Less to CSS
+          "style-loader",
+          "css-loader",
+          "less-loader",
+        ],
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          ...{
+            loader: "css-loader",
+            // options: {...}
+          },
+          {
+            loader: "resolve-url-loader",
+            // options: {...}
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              sourceMap: true, // <-- !!IMPORTANT!!
+            },
+          },
+        ],
       },
     ],
   },
