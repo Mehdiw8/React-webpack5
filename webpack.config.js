@@ -1,8 +1,11 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+
 module.exports = {
   entry: "./src/index.js", // Entry point of your application
   output: {
@@ -10,10 +13,12 @@ module.exports = {
     filename: "bundle.js", // Output bundle file name
   },
   optimization: {
+    minimize: true,
     minimizer: [
       // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
       // `...`,
       new CssMinimizerPlugin(),
+      new TerserPlugin(),
     ],
   },
   module: {
@@ -57,25 +62,6 @@ module.exports = {
           "less-loader",
         ],
       },
-      {
-        test: /\.scss$/,
-        use: [
-          ...{
-            loader: "css-loader",
-            // options: {...}
-          },
-          {
-            loader: "resolve-url-loader",
-            // options: {...}
-          },
-          {
-            loader: "sass-loader",
-            options: {
-              sourceMap: true, // <-- !!IMPORTANT!!
-            },
-          },
-        ],
-      },
     ],
   },
   plugins: [
@@ -85,6 +71,12 @@ module.exports = {
       filename: "./index.html", // output filename
     }),
     new CleanWebpackPlugin(),
+    new CopyPlugin({
+        patterns: [
+          { from: "source", to: "dest" },
+          { from: "other", to: "public" },
+        ],
+      }),
   ],
   resolve: {
     extensions: [".js", ".jsx"], // File extensions to resolve
