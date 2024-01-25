@@ -4,7 +4,7 @@
   "description": "* npm init -y * npm install webpack webpack-cli --save-dev (or -D)",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development --port 7172 --open --hot",
+    "start": "webpack-dev-server --mode development --port 3000 --open --hot",
     "dev": "webpack --mode development --progress",
     "build": "webpack --mode production --progress"
   },
